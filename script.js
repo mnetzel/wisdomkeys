@@ -6,7 +6,7 @@ const images = {
 };
 
 const copy = {
-  de: {
+  fr: {
     tagline: "TRANSFORMATION · HEILUNG · FRIEDEN",
     footer: "Alle Rechte vorbehalten.",
     nav: {
@@ -194,8 +194,8 @@ const copy = {
   }
 };
 
-copy.en = { ...copy.de, ...copy.en };
-copy["de-ch"] = { ...copy.de, ...copy["de-ch"] };
+copy.en = { ...copy.fr, ...copy.en };
+copy["de-ch"] = { ...copy.fr, ...copy["de-ch"] };
 
 const navItems = [
   ["home", "#/"],
@@ -216,10 +216,11 @@ const navItems = [
 const app = document.querySelector("#app");
 const nav = document.querySelector(".main-nav");
 const menuToggle = document.querySelector(".menu-toggle");
-let language = localStorage.getItem("wisdomkeys-language") || "de";
+let language = localStorage.getItem("wisdomkeys-language") || "de-ch";
+if (language === "de") language = "fr";
 
 function currentCopy() {
-  return copy[language] || copy.de;
+  return copy[language] || copy["de-ch"];
 }
 
 function route() {
