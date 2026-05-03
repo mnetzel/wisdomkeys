@@ -194,8 +194,10 @@ const copy = {
   }
 };
 
-copy.en = { ...copy.fr, ...copy.en, nav: { ...copy.fr.nav, ...copy.en.nav } };
-copy["de-ch"] = { ...copy.fr, ...copy["de-ch"], nav: { ...copy.fr.nav, ...copy["de-ch"].nav } };
+const baseCopy = copy.fr;
+copy.en = { ...baseCopy, ...copy.en, nav: { ...baseCopy.nav, ...copy.en.nav } };
+copy["de-ch"] = { ...baseCopy, ...copy["de-ch"], nav: { ...baseCopy.nav, ...copy["de-ch"].nav } };
+delete copy.fr;
 
 const menuLabels = {
   home: "HOME",
@@ -255,7 +257,7 @@ const app = document.querySelector("#app");
 const nav = document.querySelector(".main-nav");
 const menuToggle = document.querySelector(".menu-toggle");
 let language = localStorage.getItem("wisdomkeys-language") || "de-ch";
-if (language === "de") language = "fr";
+if (language === "de" || language === "fr") language = "de-ch";
 
 function currentCopy() {
   return copy[language] || copy["de-ch"];
