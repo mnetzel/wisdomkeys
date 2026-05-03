@@ -194,23 +194,61 @@ const copy = {
   }
 };
 
-copy.en = { ...copy.fr, ...copy.en };
-copy["de-ch"] = { ...copy.fr, ...copy["de-ch"] };
+copy.en = { ...copy.fr, ...copy.en, nav: { ...copy.fr.nav, ...copy.en.nav } };
+copy["de-ch"] = { ...copy.fr, ...copy["de-ch"], nav: { ...copy.fr.nav, ...copy["de-ch"].nav } };
+
+const menuLabels = {
+  home: "HOME",
+  fire: "FEUER",
+  fireConnection: "MEINE VERBINDUNG MIT DEM FEUER",
+  fireCeremony: "FEUERZEREMONIE-YAGNA",
+  transformation: "TRANSFORMATION BEGLEITUNG",
+  rituals: "ÜBERGANGS RITUALE",
+  futuresFire: "FEUER DER ZUKUNFT",
+  progression: "PROGRESSION",
+  workshops: "WORKSHOPS",
+  women: "HEILKREIS FÜR FRAUEN",
+  selfWorth: "SELBSTWERT",
+  surrender: "AUFGABE UND HINGABE",
+  meditations: "MEDITATIONEN",
+  travels: "REISEN",
+  events: "TERMINE",
+  about: "ÜBER MICH",
+  contact: "KONTAKT"
+};
+
+Object.values(copy).forEach((item) => {
+  item.nav = { ...item.nav, ...menuLabels };
+});
 
 const navItems = [
-  ["home", "#/"],
-  ["fire", "#/feuerzeremonie"],
-  ["transformation", "#/transformation"],
-  ["rituals", "#/rituale"],
-  ["progression", "#/progression"],
-  ["women", "#/heilkreis-frauen"],
-  ["selfWorth", "#/selbstwert"],
-  ["surrender", "#/aufgabe-hingabe"],
-  ["meditations", "#/meditationen"],
-  ["travels", "#/reisen"],
-  ["events", "#/termine"],
-  ["about", "#/ueber-mich"],
-  ["contact", "#/kontakt"]
+  { key: "home", href: "#/" },
+  {
+    key: "fire",
+    children: [
+      { key: "fireConnection", href: "#/feuer-verbindung" },
+      { key: "fireCeremony", href: "#/feuerzeremonie" }
+    ]
+  },
+  { key: "transformation", href: "#/transformation" },
+  { key: "rituals", href: "#/rituale" },
+  {
+    key: "futuresFire",
+    children: [{ key: "progression", href: "#/progression" }]
+  },
+  {
+    key: "workshops",
+    children: [
+      { key: "women", href: "#/heilkreis-frauen" },
+      { key: "selfWorth", href: "#/selbstwert" },
+      { key: "surrender", href: "#/aufgabe-hingabe" },
+      { key: "meditations", href: "#/meditationen" }
+    ]
+  },
+  { key: "travels", href: "#/reisen" },
+  { key: "events", href: "#/termine" },
+  { key: "about", href: "#/ueber-mich" },
+  { key: "contact", href: "#/kontakt" }
 ];
 
 const app = document.querySelector("#app");
@@ -235,10 +273,30 @@ function renderNav() {
   const t = currentCopy();
   const active = route();
   nav.innerHTML = navItems
-    .map(([key, href]) => {
-      const itemRoute = href.replace(/^#\/?/, "") || "home";
+    .map((item) => {
+      if (item.children) {
+        const childLinks = item.children
+          .map((child) => {
+            const childRoute = child.href.replace(/^#\/?/, "") || "home";
+            const childActive = active === childRoute;
+            return `<a class="submenu-link ${childActive ? "is-active" : ""}" href="${child.href}">${t.nav[child.key]}</a>`;
+          })
+          .join("");
+        const groupActive = item.children.some((child) => active === child.href.replace(/^#\/?/, ""));
+
+        return `
+          <div class="nav-group ${groupActive ? "is-active" : ""}">
+            <button class="nav-parent" type="button" aria-expanded="false">
+              ${t.nav[item.key]} <span aria-hidden="true">⌄</span>
+            </button>
+            <div class="submenu">${childLinks}</div>
+          </div>
+        `;
+      }
+
+      const itemRoute = item.href.replace(/^#\/?/, "") || "home";
       const isActive = active === itemRoute || (active === "home" && itemRoute === "home");
-      return `<a class="${isActive ? "is-active" : ""}" href="${href}">${t.nav[key]}</a>`;
+      return `<a class="${isActive ? "is-active" : ""}" href="${item.href}">${t.nav[item.key]}</a>`;
     })
     .join("");
 }
@@ -423,6 +481,28 @@ document.querySelectorAll("[data-language]").forEach((button) => {
 menuToggle.addEventListener("click", () => {
   const isOpen = nav.classList.toggle("is-open");
   menuToggle.setAttribute("aria-expanded", String(isOpen));
+});
+
+nav.addEventListener("click", (event) => {
+  const parent = event.target.closest(".nav-parent");
+  if (parent) {
+    const group = parent.closest(".nav-group");
+    const isOpen = group.classList.toggle("is-open");
+    parent.setAttribute("aria-expanded", String(isOpen));
+
+    nav.querySelectorAll(".nav-group").forEach((item) => {
+      if (item !== group) {
+        item.classList.remove("is-open");
+        item.querySelector(".nav-parent")?.setAttribute("aria-expanded", "false");
+      }
+    });
+    return;
+  }
+
+  if (event.target.closest("a")) {
+    nav.classList.remove("is-open");
+    menuToggle.setAttribute("aria-expanded", "false");
+  }
 });
 
 window.addEventListener("hashchange", render);

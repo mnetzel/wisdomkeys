@@ -143,19 +143,68 @@ a {
   flex-wrap: wrap;
 }
 
-.main-nav a {
+.main-nav a,
+.nav-parent {
   padding: 0.54rem 0.72rem;
   color: var(--muted);
+  background: transparent;
+  border: 0;
   text-decoration: none;
   border-radius: 999px;
   font-size: 0.86rem;
   letter-spacing: 0.035em;
+  cursor: pointer;
 }
 
 .main-nav a:hover,
-.main-nav a.is-active {
+.main-nav a.is-active,
+.nav-group:hover > .nav-parent,
+.nav-group:focus-within > .nav-parent,
+.nav-group.is-active > .nav-parent {
   color: var(--ember-dark);
   background: #fff0d5;
+}
+
+.nav-group {
+  position: relative;
+}
+
+.nav-parent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.submenu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.35rem);
+  display: grid;
+  min-width: 17rem;
+  padding: 0.45rem;
+  background: rgba(255, 253, 248, 0.98);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(-0.4rem);
+  visibility: hidden;
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+}
+
+.nav-group:hover > .submenu,
+.nav-group:focus-within > .submenu,
+.nav-group.is-open > .submenu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.submenu .submenu-link {
+  display: block;
+  padding: 0.72rem 0.85rem;
+  border-radius: 0.75rem;
+  white-space: nowrap;
 }
 
 .hero {
@@ -441,6 +490,39 @@ button.button {
 
   .main-nav.is-open {
     display: flex;
+  }
+
+  .nav-group {
+    width: 100%;
+  }
+
+  .nav-parent,
+  .main-nav > a {
+    width: 100%;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .submenu {
+    position: static;
+    display: none;
+    min-width: 0;
+    margin: 0.2rem 0 0.5rem 0.75rem;
+    padding: 0.25rem;
+    background: rgba(255, 244, 222, 0.62);
+    box-shadow: none;
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+
+  .nav-group.is-open > .submenu,
+  .nav-group.is-active > .submenu {
+    display: grid;
+  }
+
+  .submenu .submenu-link {
+    white-space: normal;
   }
 
   .cards,
