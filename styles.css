@@ -322,9 +322,13 @@ li {
   width: 3rem;
   height: 3rem;
   margin-bottom: 1rem;
-  color: white;
-  background: linear-gradient(135deg, var(--ember), var(--gold));
-  border-radius: 50%;
+}
+
+.card-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .button-row {
