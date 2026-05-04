@@ -542,7 +542,6 @@ function renderHome(t) {
         .map(
           ([title, text, href]) => html`
             <article class="card">
-              <span class="card-icon" aria-hidden="true"><img src="fire.svg" alt="" /></span>
               <h3>${title}</h3>
               <p>${text}</p>
               <a class="button secondary" href="${href}">${t.ui.learnMore}</a>
