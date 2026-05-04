@@ -25,7 +25,7 @@ html {
 body {
   margin: 0;
   color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Libre Baskerville", Georgia, "Times New Roman", serif;
   background:
     radial-gradient(circle at 8% 0%, rgba(255, 207, 116, 0.26), transparent 26rem),
     linear-gradient(180deg, #fff8eb 0%, #fffdf8 44%, #fff2e8 100%);
