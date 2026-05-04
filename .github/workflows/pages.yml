@@ -33,7 +33,7 @@ jobs:
       - name: Prepare static artifact
         run: |
           mkdir _site
-          cp index.html styles.css script.js .nojekyll _site/
+          cp index.html styles.css script.js fire.svg .nojekyll _site/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
