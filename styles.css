@@ -1,5 +1,5 @@
 :root {
-  --ink: #2f241d;
+  --ink: #724121;
   --muted: #735f53;
   --line: rgba(132, 82, 38, 0.18);
   --paper: #fffdf8;
@@ -12,6 +12,22 @@
   --green: #4f7b63;
   --shadow: 0 20px 60px rgba(91, 54, 23, 0.11);
   --radius: 18px;
+  --brand-logo-width: 1.6rem;
+  --brand-logo-height: 2.7rem;
+  --brand-logo-x: 0rem;
+  --brand-logo-y: 0rem;
+  --brand-text-x: 0rem;
+  --brand-text-y: 0.25rem;
+  --brand-gap: 0.8rem;
+  --footer-content-x: 0rem;
+  --footer-content-y: 0rem;
+  --footer-logo-width: var(--brand-logo-width);
+  --footer-logo-height: var(--brand-logo-height);
+  --footer-logo-x: 0rem;
+  --footer-logo-y: -0.2rem;
+  --footer-text-x: 0rem;
+  --footer-text-y: 0.35rem;
+  --footer-gap: 0.8rem;
 }
 
 * {
@@ -59,13 +75,14 @@ a {
   gap: 1rem;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 1rem 1.25rem;
+  padding: 2rem 1.25rem;
 }
 
 .brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
+  display: inline-grid;
+  grid-template-columns: var(--brand-logo-width) max-content;
+  align-items: start;
+  column-gap: var(--brand-gap);
   width: fit-content;
   text-decoration: none;
   letter-spacing: 0.08em;
@@ -74,6 +91,14 @@ a {
 .brand strong {
   display: block;
   font-size: clamp(1.05rem, 2vw, 1.55rem);
+}
+
+.brand-name-text {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  left: var(--brand-text-x);
+  top: var(--brand-text-y);
 }
 
 .brand small {
@@ -88,8 +113,18 @@ a {
 .footer-mark {
   display: grid;
   place-items: center;
-  width: 1.6rem;
-  height: 2.7rem;
+  width: var(--brand-logo-width);
+  height: var(--brand-logo-height);
+}
+
+.brand-mark {
+  transform: translate(var(--brand-logo-x), var(--brand-logo-y));
+}
+
+.footer-mark {
+  width: var(--footer-logo-width);
+  height: var(--footer-logo-height);
+  transform: translate(var(--footer-logo-x), var(--footer-logo-y));
 }
 
 .brand-mark img,
@@ -468,16 +503,20 @@ button.button {
 .site-footer {
   display: grid;
   justify-items: center;
-  gap: 0.8rem;
+  gap: var(--footer-gap);
   padding: 2.5rem 1rem;
   text-align: center;
   border-top: 1px solid var(--line);
   background: rgba(255, 253, 248, 0.74);
+  transform: translate(var(--footer-content-x), var(--footer-content-y));
 }
 
 .site-footer p {
   margin: 0;
   font-size: 0.92rem;
+  position: relative;
+  left: var(--footer-text-x);
+  top: var(--footer-text-y);
 }
 
 @media (max-width: 900px) {
@@ -545,8 +584,27 @@ button.button {
 }
 
 @media (max-width: 560px) {
+  :root {
+    --brand-logo-width: 1.6rem;
+    --brand-logo-height: 2.7rem;
+    --brand-logo-x: 0rem;
+    --brand-logo-y: -0.5rem;
+    --brand-text-x: 0rem;
+    --brand-text-y: 0.25rem;
+    --brand-gap: 0.8rem;
+    --footer-content-x: 0rem;
+    --footer-content-y: 0rem;
+    --footer-logo-width: var(--brand-logo-width);
+    --footer-logo-height: var(--brand-logo-height);
+    --footer-logo-x: 0rem;
+    --footer-logo-y: 0rem;
+    --footer-text-x: 0rem;
+    --footer-text-y: 0rem;
+    --footer-gap: 0.8rem;
+  }
+
   .brand-row {
-    gap: 0.55rem;
+    gap: 1rem;
   }
 
   .brand small {
